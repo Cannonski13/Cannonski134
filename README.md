@@ -1,2 +1,2 @@
-# DJ-Cannonski
-A Discord bot for my music server
+# Cannonski
+A Discord bot 
