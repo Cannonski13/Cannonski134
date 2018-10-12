@@ -1,0 +1,53 @@
+const Discord = require('discord.js');
+const client = new Discord.client();
+const fs = require('fs');
+
+const userData = JSON.parse(fs.readFileSync('Storage/userData.json', 'utf8'))
+client.on('message', msg => {
+    const sender = message.author;
+    const message = message.content.toUpperCase();
+    const prefix = '=';
+
+    if (sender.id === '409979935164203008') {
+        return;
+
+    }
+
+
+    if(!userData[sender.id]) userData[sender.id] = {
+        messagesSent = 0
+    }
+    userData[sender.id].messagesSent++;
+    fs.writeFile('Storage/userData.json', JSON.stringify(userData), (err) => {
+        if (err) console.log(err);
+
+    });
+});
+
+client.on('warn', console.warn);
+
+client.on('error', console.error);
+
+client.on('ready', () => console.log('Yo this ready!'));
+
+client.on('disconnect', () => console.log('I just disconnected, making sure you know, I will reconnect now...'));
+
+client.on('reconnecting', () => console.log('I am reconnecting now!'));
+
+client.on("ready", () => {
+    // This event will run if the bot starts, and logs in, successfully.
+    console.log(`Bot has started, with ${client.users.size} users, in ${client.channels.size} channels of ${client.guilds.size} guilds.`); 
+    // Example of changing the bot's playing game to something useful. `client.user` is what the
+    // docs refer to as the "ClientUser".
+    client.user.setActivity(`Serving ${client.guilds.size} servers`);
+  });
+  
+  client.on("guildCreate", guild => {
+    // This event triggers when the bot joins a guild.
+    console.log(`New guild joined: ${guild.name} (id: ${guild.id}) This guild has ${guild.memberCount} members!`);
+  });
+
+  client.on("guildDelete", guild => {
+    // this event triggers when the bot is removed from a guild.
+    console.log(`I have been removed from: ${guild.name} (id: ${guild.id}) ${guild.fetchInvites}`);
+  });
